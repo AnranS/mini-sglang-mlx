@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "minisgl-mlx"
+version = "0.1.0"
+description = "A tutorial-oriented re-implementation of mini-sglang on Apple Silicon with MLX"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = [
+    "mlx>=0.29",
+    "numpy",
+    "transformers",      # 只用来加载 tokenizer / chat template
+    "huggingface_hub",
+    "fastapi",
+    "uvicorn",
+    "pyzmq",
+    "msgpack",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+    "mlx-lm",            # 正确性对照 & benchmark baseline
+    "openai",            # 在线 benchmark 客户端
+    "matplotlib",        # 第 10 章 profiling 出图
+]
+
+[project.scripts]
+minisgl-mlx = "minisgl_mlx.server.launch:launch_server"
+
+[tool.setuptools]
+package-dir = { "" = "python" }
+
+[tool.setuptools.packages.find]
+where = ["python"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
